@@ -1,0 +1,60 @@
+Aqui está o seu código reescrito usando a palavra-chave function tradicional. Note que a lógica do React (os useState) continua exatamente a mesma:
+
+import React, { useState } from 'react';
+// 1. O componente agora usa 'function' em vez de 'const' e '=>'function Calculo() {
+  const [peso, setPeso] = useState('');
+  const [altura, setAltura] = useState('');
+  const [resultado, setResultado] = useState('');
+
+  // 2. A lógica interna também vira uma função tradicional
+  function calcularIMC() {
+    const p = parseFloat(peso);
+    const a = parseFloat(altura.replace(',', '.'));
+
+    if (p > 0 && a > 0) {
+      const imc = (p / (a * a)).toFixed(2);
+      setResultado(`Seu IMC é: ${imc}`);
+    } else {
+      setResultado('Por favor, insira valores válidos.');
+    }
+  }
+
+  return (
+    <div className="container">
+      <h1>Calculadora do IMC</h1>
+      <div className="form">
+        <label>Peso (Kg)</label>
+        <input 
+          type="number" 
+          value={peso} 
+          onChange={function(e) { setPeso(e.target.value) }} 
+          placeholder='Ex: 75' 
+        />
+
+        <label>Altura (m)</label>
+        <input 
+          type="number" 
+          value={altura} 
+          onChange={function(e) { setAltura(e.target.value) }} 
+          placeholder='Ex: 1.75' 
+        />
+
+        <button onClick={calcularIMC}>Calcular o IMC</button>
+      </div>
+
+      <div className="resultado">
+        {resultado}
+      </div>
+    </div>
+  );
+}
+export default Calculo;
+
+## O que mudou na prática?
+
+* No visual: O código ficou um pouco mais "verboso" (com mais palavras escritas), especialmente nos onChange dos inputs.
+* No funcionamento: Para este componente simples, não muda absolutamente nada. O resultado na tela e o cálculo serão idênticos.
+
+A maioria dos desenvolvedores prefere a versão anterior (Arrow Function) porque, em projetos grandes, economiza muitas linhas de código e deixa a estrutura do React mais limpa.
+Quer que eu explique a diferença de como o this se comporta entre esses dois tipos de função?
+
