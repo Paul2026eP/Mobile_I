@@ -1,0 +1,123 @@
+let compQuadra = 700;
+let altQuadra = compQuadra / 2.167;
+
+// Variáveis da Bola
+let xBola = compQuadra / 2;
+let yBola = altQuadra / 2;
+let dBola = 20;
+let velXBola = 10;
+let velYBola = 10;
+
+// Variáveis das Raquetes
+let largRaquete = 12;
+let altRaquete = 70;
+let velRaquete = 6;
+
+// Posição Raquete Esquerda (Jogador 1)
+let xRaqueteEsq = 15;
+let yRaqueteEsq = (altQuadra / 2) - (altRaquete / 2);
+
+// Posição Raquete Direita (Jogador 2)
+let xRaqueteDir = compQuadra - 15 - largRaquete;
+let yRaqueteDir = (altQuadra / 2) - (altRaquete / 2);
+
+function setup() {
+  createCanvas(compQuadra, altQuadra);
+}
+
+function draw() {
+  background("#CC7722");
+  linhas();
+  bola();
+  movBola();
+  desenhaRaquetes();
+  movRaquetes();
+  verificaColisaoRaquetes();
+}
+
+function linhas() {
+  stroke("#FFFFFF");
+  strokeWeight(4);
+  fill("#CC7722");
+ 
+  rect(2, 2, compQuadra - 4, altQuadra - 4);
+  line(compQuadra / 2, 0, compQuadra / 2, altQuadra);
+  line(0, 30, compQuadra, 30);
+  line(0, altQuadra - 30, compQuadra, altQuadra - 30);
+  line(compQuadra / 4, 30, compQuadra / 4, altQuadra - 30);
+  line((compQuadra / 4) * 3, 30, (compQuadra / 4) * 3, altQuadra - 30);
+  line(compQuadra / 4, altQuadra / 2, (compQuadra / 4) * 3, altQuadra / 2);
+}
+
+function bola(){
+  fill("#ADFF2F");
+  noStroke();
+  circle(xBola, yBola, dBola);
+}
+
+function movBola(){
+  xBola += velXBola;
+  yBola += velYBola;
+
+  // Se passar direto pelas laterais, reinicia no centro (Ponto)
+  if(xBola - dBola/2 < 0 || xBola + dBola/2 > compQuadra){
+    xBola = compQuadra / 2;
+    yBola = altQuadra / 2;
+    velXBola *= -1; // Inverte o sentido do saque
+  }
+
+  // Rebatida no teto e no chão da quadra
+  if(yBola - dBola/2 < 0 || yBola + dBola/2 > altQuadra){
+    velYBola *= -1;
+  }
+}
+
+function desenhaRaquetes() {
+  fill("#FFFFFF");
+  noStroke();
+  // Desenha a esquerda e a direita
+  rect(xRaqueteEsq, yRaqueteEsq, largRaquete, altRaquete);
+  rect(xRaqueteDir, yRaqueteDir, largRaquete, altRaquete);
+}
+
+function movRaquetes() {
+  // Controle do Jogador 1 (W para subir, S para descer)
+  if (keyIsDown(87)) { // Código da tecla W
+    yRaqueteEsq -= velRaquete;
+  }
+  if (keyIsDown(83)) { // Código da tecla S
+    yRaqueteEsq += velRaquete;
+  }
+
+  // Controle do Jogador 2 (Seta para cima e Seta para baixo)
+  if (keyIsDown(UP_ARROW)) {
+    yRaqueteDir -= velRaquete;
+  }
+  if (keyIsDown(DOWN_ARROW)) {
+    yRaqueteDir += velRaquete;
+  }
+
+  // Impede as raquetes de saírem pelas bordas verticais da tela
+  yRaqueteEsq = constrain(yRaqueteEsq, 0, altQuadra - altRaquete);
+  yRaqueteDir = constrain(yRaqueteDir, 0, altQuadra - altRaquete);
+}
+
+function verificaColisaoRaquetes() {
+  let raio = dBola / 2;
+
+  // Colisão com a raquete esquerda
+  if (xBola - raio < xRaqueteEsq + largRaquete &&
+      yBola + raio > yRaqueteEsq &&
+      yBola - raio < yRaqueteEsq + altRaquete &&
+      velXBola < 0) {
+    velXBola *= -1;
+  }
+
+  // Colisão com a raquete direita
+  if (xBola + raio > xRaqueteDir &&
+      yBola + raio > yRaqueteDir &&
+      yBola - raio < yRaqueteDir + altRaquete &&
+      velXBola > 0) {
+    velXBola *= -1;
+  }
+}
