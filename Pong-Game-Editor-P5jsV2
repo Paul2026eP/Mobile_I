@@ -1,0 +1,85 @@
+let comQuadra = 500;
+let altQuadra = comQuadra / 2.167;
+
+let xBola = comQuadra / 2;
+let yBola = altQuadra / 2;
+let dBola = 20;
+let raio = dBola / 2;
+
+let velXBola = 6;
+let velYBola = velXBola;
+
+let xRaqEsq = 10;
+let yRaqEsq = altQuadra / 2 - 30;
+let xRaqDir = comQuadra - 20;
+let yRaqDir = altQuadra / 2 - 30;
+let larRaq = 10;
+let altRaq = 60;
+
+function setup() {
+  createCanvas(comQuadra, altQuadra);
+}
+
+function draw() {
+  background("#CC7722");
+  linhas();
+  bola();
+  movBola();
+  raqEsq();
+  raqDir();
+}
+
+function linhas() {
+  stroke("#FFFFFF");
+  strokeWeight("4");
+  fill("#CC7722");
+  rect(2, 2, width - 4, height - 4);
+  line(width / 2, 0, width / 2, height);
+  line(0, 30, width, 30);
+  line(0, height - 30, width, height - 30);
+  line(width / 4, 30, width / 4, height - 30);
+  line((width / 4) * 3, 30, (width / 4) * 3, height - 30);
+  line(width / 4, height / 2, (width / 4) * 3, height / 2);
+}
+
+function bola() {
+  noStroke();
+  fill("#ADFF2F");
+  circle(xBola, yBola, dBola);
+}
+
+function movBola() {
+  xBola += velXBola;
+  yBola += velYBola;
+
+  if (xBola < raio || xBola + raio > width) {
+    velXBola *= -1;
+  }
+
+  if (yBola < raio || yBola + raio > height) {
+    velYBola *= -1;
+  }
+}
+
+function raqEsq() {
+  rect(xRaqEsq, yRaqEsq, larRaq, altRaq);
+
+  if (yRaqEsq > 10 && keyIsDown(87)){ 
+  yRaqEsq -=10; 
+  }
+  if (yRaqEsq < height - 70 && keyIsDown (83)) {
+      yRaqEsq +=10;
+    }
+  
+}
+
+function raqDir() {
+  rect(xRaqDir, yRaqDir, larRaq, altRaq);
+  
+  if (yRaqDir > 10 && keyIsDown(UP_ARROW)) {
+    yRaqDir -=10;
+  }
+ if (yRaqDir < height - 70 &&keyIsDown(DOWN_ARROW)) {
+   yRaqDir +=10;
+ }
+}
